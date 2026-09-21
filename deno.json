@@ -1,0 +1,19 @@
+{
+  "tasks": {
+    "build": "deno run --allow-read --allow-run --allow-write scripts/build.ts",
+    "check": "deno fmt --check && deno lint && deno test",
+    "serve": "deno run --allow-env --allow-net --allow-read scripts/serve.ts",
+    "test": "deno test"
+  },
+  "fmt": {
+    "exclude": [
+      ".agents",
+      ".github",
+      "CONTEXT.md",
+      "docs",
+      "SPEC.md"
+    ],
+    "lineWidth": 100,
+    "singleQuote": true
+  }
+}

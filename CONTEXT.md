@@ -5,7 +5,9 @@ PWA for capturing two GPS points and comparing the distance between them in mult
 ## Language
 
 **Point**:
-A GPS coordinate captured from the device's current location for use as one end of a distance comparison.
+A GPS coordinate and horizontal-accuracy reading captured from the device's current location for use
+as one end of a distance comparison. A Point is valid only when its reported horizontal accuracy is
+5 m or better.
 _Avoid_: location, marker
 
 **Measurement**:
