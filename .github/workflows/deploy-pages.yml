@@ -27,11 +27,26 @@ jobs:
         with:
           deno-version: v2.x
 
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
       - name: Check application
         run: deno task check
 
       - name: Build application
         run: deno task build
+
+      - name: Inspect Pages artifact
+        run: |
+          echo 'Files prepared for GitHub Pages:'
+          find dist -type f -printf '%p\t%s bytes\n' | sort
+          echo
+          echo 'SHA-256 checksums:'
+          find dist -type f -print0 | sort -z | xargs -0 sha256sum
+          echo
+          echo 'Module reference in index.html:'
+          grep -F 'script type="module"' dist/index.html
+          test -s dist/app.js
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -48,3 +63,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Report deployment URL
+        run: 'echo "GitHub Pages deployment: ${{ steps.deployment.outputs.page_url }}"'
