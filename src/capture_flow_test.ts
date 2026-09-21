@@ -37,7 +37,10 @@ Deno.test('rejects a Start point whose GPS accuracy exceeds five meters', async 
     throw new Error(`Expected location-unavailable phase, received ${state.phase}.`);
   }
 
-  if (state.message !== 'GPS accuracy must be 5 m or better. Try again in a clearer location.') {
+  if (
+    state.message !==
+      'GPS accuracy was 6 m; it must be 5 m or better. Try again in a clearer location.'
+  ) {
     throw new Error('Expected an accuracy-recovery message.');
   }
 });

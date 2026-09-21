@@ -32,7 +32,7 @@ export function createCaptureFlow(requestLocation: RequestLocation): CaptureFlow
       const point = await requestLocation();
 
       if (!isAccurate(point)) {
-        state = accuracyFailure();
+        state = accuracyFailure(point.accuracyMeters);
         return;
       }
 
@@ -49,7 +49,7 @@ export function createCaptureFlow(requestLocation: RequestLocation): CaptureFlow
       const point = await requestLocation();
 
       if (!isAccurate(point)) {
-        state = accuracyFailure(state.start);
+        state = accuracyFailure(point.accuracyMeters, state.start);
         return;
       }
 
@@ -73,10 +73,12 @@ function isAccurate(point: CapturedPoint): boolean {
   return point.accuracyMeters <= REQUIRED_ACCURACY_METERS;
 }
 
-function accuracyFailure(start?: CapturedPoint): CaptureState {
+function accuracyFailure(accuracyMeters: number, start?: CapturedPoint): CaptureState {
   return {
     phase: 'location-unavailable',
     start,
-    message: 'GPS accuracy must be 5 m or better. Try again in a clearer location.',
+    message: `GPS accuracy was ${
+      Math.round(accuracyMeters)
+    } m; it must be 5 m or better. Try again in a clearer location.`,
   };
 }
